@@ -11,7 +11,7 @@ import (
  * @Author: Lee
  * @Date: 2021/6/29 9:45
  * @Desc:从百度地图行政区划adcode映射表（https://lbsyun.baidu.com/index.php?title=open/dev-res）解析成MySQL四级（省、市、县、镇）城市地址。
-		 下载excel后，转成csv，重命名为Township_Area.csv，并去掉第一行title行
+		 下载excel后，转成csv，重命名为Township_Area.csv
  */
 type cityItem struct {
 	Id int32
@@ -27,7 +27,7 @@ func main()  {
 	}
 	//1.把数据转换成四级map结构
 	for _,v := range line{
-		if strings.Contains(v,"苏鲁交界"){
+		if strings.Contains(v,"苏鲁交界")||strings.HasPrefix(v,"name_prov"){
 			continue
 		}
 		tmpArr := strings.Split(v,",")
@@ -41,9 +41,6 @@ func main()  {
 			city[tmpArr[0]][tmpArr[2]][tmpArr[4]] = make([]string,0)
 		}
 		city[tmpArr[0]][tmpArr[2]][tmpArr[4]] = append(city[tmpArr[0]][tmpArr[2]][tmpArr[4]],tmpArr[6])
-		//if _,ok := city[tmpArr[0]][tmpArr[2]][tmpArr[4]][tmpArr[6]];!ok{
-		//	city[tmpArr[0]][tmpArr[2]][tmpArr[4]][tmpArr[6]] = true
-		//}
 	}
 
 	//省份数量
